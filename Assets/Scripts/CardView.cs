@@ -16,6 +16,7 @@ public class CardView : MonoBehaviour
     public TextMeshProUGUI grade;
     public TextMeshProUGUI kingdom;
     public GameObject border;
+    public GameObject addButton;
 
     private IHeroData heroData;
     private HeroCardSO hero;
@@ -43,6 +44,19 @@ public class CardView : MonoBehaviour
             gameObject.SetActive(false);
         }
     }
+    public void ViewFromInventory(HeroCardSO heroCard)
+    {
+        if (!gameObject.activeInHierarchy)
+        {
+            gameObject.SetActive(true);
+        }       
+        SetBorderColor(heroCard);
+        SetCardInfo(heroCard);
+        if (addButton.activeInHierarchy)
+        {
+            addButton.SetActive(false);
+        }
+    }
     public void StartButton()
     {
         if (!gameObject.activeInHierarchy)
@@ -52,6 +66,10 @@ public class CardView : MonoBehaviour
         hero = heroCard[Random.Range(0, 4)];    
         SetBorderColor(hero);
         SetCardInfo(hero);
+        if (!addButton.activeInHierarchy)
+        {
+            addButton.SetActive(true);
+        }
     }
 
     private void SetBorderColor(HeroCardSO heroCard)
