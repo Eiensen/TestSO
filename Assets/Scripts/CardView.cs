@@ -15,18 +15,43 @@ public class CardView : MonoBehaviour
     public TextMeshProUGUI attackMode;
     public TextMeshProUGUI grade;
     public TextMeshProUGUI kingdom;
-    public GameObject border;   
-   
+    public GameObject border;
 
+    private IHeroData heroData;
+    private HeroCardSO hero;
+
+    private void Awake()
+    {
+    }
+
+    public void SetMediator (IHeroData hero)
+    {
+        heroData = hero;
+    }
+
+    public void AddButton()
+    {
+        heroData.Notify(this, hero);
+
+        gameObject.SetActive(false);
+    }
+
+    public void CloseButton()
+    {
+        if (gameObject.activeInHierarchy)
+        {
+            gameObject.SetActive(false);
+        }
+    }
     public void StartButton()
     {
         if (!gameObject.activeInHierarchy)
         {
             gameObject.SetActive(true);
         }
-        HeroCardSO heroCardTmp = heroCard[Random.Range(0, 4)];
-        SetBorderColor(heroCardTmp);
-        SetCardInfo(heroCardTmp);
+        hero = heroCard[Random.Range(0, 4)];    
+        SetBorderColor(hero);
+        SetCardInfo(hero);
     }
 
     private void SetBorderColor(HeroCardSO heroCard)
@@ -50,7 +75,7 @@ public class CardView : MonoBehaviour
         lvl.text = heroCard.level.ToString();
         description.text = heroCard.description;
         defenceValue.text = (heroCard.GetDefenceFactor() * 100).ToString();
-        attackValue.text = (heroCard.GetAttackFactor() * 150).ToString();
+        attackValue.text = Mathf.RoundToInt(heroCard.GetAttackFactor() * 150).ToString();
         attackMode.text = heroCard.attackType.ToString();
         kingdom.text = "Королевство: " + heroCard.heroRace;
         switch (heroCard.warriorGrade)
